@@ -1,6 +1,8 @@
 ﻿using Confluent.Kafka;
 using Newtonsoft.Json;
 
+//configuration of consumer
+
 var config = new ConsumerConfig
 {
     GroupId = "weather-consumer-group",
@@ -8,7 +10,7 @@ var config = new ConsumerConfig
     AutoOffsetReset = AutoOffsetReset.Earliest
 };
 
-
+//creating consumer 
 var consumer = new ConsumerBuilder<Null, string >(config).Build();
 
 consumer.Subscribe("weather-topic");
@@ -23,7 +25,7 @@ try
         if (response.Message != null)
         {
             var weather = JsonConvert.DeserializeObject<Weather>(response.Message.Value);
-            Console.WriteLine($" State : {weather.State}" +
+            Console.WriteLine($" State : {weather.State} " +
                 $"Temperature as now : {weather.Temperature} F");
 
         }
@@ -36,4 +38,4 @@ catch (Exception)
 
 }
 
-public record Weather(string State, float Temperature);
+public record Weather(string State, int Temperature);
